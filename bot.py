@@ -25,6 +25,14 @@ with sync_playwright() as p:
 
     # Abrir calendario de ida
     inputs.nth(2).click()
+    dias = page.locator("button")
+
+    print("\nCALENDARIO\n")
+
+    for i in range(dias.count()):
+        texto = dias.nth(i).inner_text().strip()
+        if texto:
+            print(i, texto)
 
     page.wait_for_timeout(2000)
 
