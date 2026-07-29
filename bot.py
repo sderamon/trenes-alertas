@@ -11,15 +11,19 @@ with sync_playwright() as p:
         timeout=120000
     )
 
-    inputs = page.locator("input")
+    # Escribir origen
+    origen = page.locator("input").nth(0)
+    origen.fill("Barcelona")
 
-    # Origen
-    inputs.nth(0).fill("Barcelona Sants")
+    page.wait_for_timeout(2000)
 
-    # Destino
-    inputs.nth(1).fill("Madrid")
+    # Mostrar las opciones que aparecen
+    opciones = page.locator('[role="option"]')
 
-    page.wait_for_timeout(3000)
+    print("Opciones:", opciones.count())
+
+    for i in range(opciones.count()):
+        print(opciones.nth(i).inner_text())
 
     page.screenshot(path="ventas.png", full_page=True)
 
