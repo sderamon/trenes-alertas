@@ -2,18 +2,24 @@ import os
 import requests
 
 
-TOKEN = os.environ["TELEGRAM_TOKEN"]
-CHAT_ID = os.environ["CHAT_ID"]
+TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
 
 
-def send_message(text):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+def enviar_mensaje(texto):
+    """Envía un mensaje a Telegram."""
 
-    requests.post(
-        url,
-        data={
-            "chat_id": CHAT_ID,
-            "text": text
-        },
-        timeout=30
-    )
+    if not TELEGRAM_TOKEN or not CHAT_ID:
+        print("Faltan TELEGRAM_TOKEN o CHAT_ID")
+        return
+
+    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+
+    datos = {
+        "chat_id": CHAT_ID,
+        "text": texto
+    }
+
+    r = requests.post(url, data=datos, timeout=30)
+
+    print("Telegram:", r.status_code)
