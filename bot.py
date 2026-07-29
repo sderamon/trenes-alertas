@@ -21,14 +21,13 @@ with sync_playwright() as p:
     # DESTINO
     inputs.nth(1).fill("Madrid")
     page.wait_for_timeout(1000)
-
-    opciones = page.get_by_role("option")
-
-    print("Opciones destino:", opciones.count())
-
-    for i in range(opciones.count()):
-        print(i, opciones.nth(i).inner_text())
-
+    
+    page.get_by_role("option").first.click()
+    
+    page.wait_for_timeout(1000)
+    
+    print("Destino seleccionado")
+    
     page.screenshot(path="ventas.png", full_page=True)
 
     browser.close()
