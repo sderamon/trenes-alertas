@@ -17,7 +17,7 @@ with sync_playwright() as p:
     print(page.title())
     print(page.url)
 
-    page.locator("body").screenshot(path="ouigo.png", full_page=True)
+   
 
     botones = page.locator("button").all_inner_texts()
 
