@@ -13,21 +13,27 @@ with sync_playwright() as p:
 
     inputs = page.locator("input")
 
-    # ORIGEN
+    # Origen
     inputs.nth(0).fill("Barcelona")
     page.wait_for_timeout(1000)
     page.get_by_role("option").first.click()
 
-    # DESTINO
+    # Destino
     inputs.nth(1).fill("Madrid")
     page.wait_for_timeout(1000)
-    
     page.get_by_role("option").first.click()
-    
-    page.wait_for_timeout(1000)
-    
-    print("Destino seleccionado")
-    
+
+    # Abrir calendario de ida
+    inputs.nth(2).click()
+
+    page.wait_for_timeout(2000)
+
+    print("\nBOTONES DEL CALENDARIO\n")
+
+    for b in page.locator("button").all_inner_texts():
+        if b.strip():
+            print("-", b)
+
     page.screenshot(path="ventas.png", full_page=True)
 
     browser.close()
