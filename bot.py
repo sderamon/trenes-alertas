@@ -13,30 +13,34 @@ with sync_playwright() as p:
 
     inputs = page.locator("input")
 
-    # Origen
+    # ORIGEN
     inputs.nth(0).fill("Barcelona")
     page.wait_for_timeout(1000)
     page.get_by_role("option").first.click()
 
-    # Destino
+    # DESTINO
     inputs.nth(1).fill("Madrid")
     page.wait_for_timeout(1000)
     page.get_by_role("option").first.click()
 
-    # Abrir calendario de ida
+    # Abrir calendario
     inputs.nth(2).click()
-    page.wait_for_timeout(2000)
+    page.wait_for_timeout(3000)
 
-    print("\nELEMENTOS CON EURO\n")
-    
-    for e in page.locator("*").all():
+    print("\nTODAS LAS CLASES DEL CALENDARIO\n")
+
+    elementos = page.locator("[class]")
+
+    for i in range(elementos.count()):
         try:
-            txt = e.inner_text().strip()
-            if "€" in txt:
-                print("-----")
-                print(txt)
-            if len(txt) > 500:
-                continue
+            clase = elementos.nth(i).get_attribute("class")
+            texto = elementos.nth(i).inner_text().strip()
+
+            if "€" in texto:
+                print("--------------------")
+                print(clase)
+                print(texto)
+
         except:
             pass
 
