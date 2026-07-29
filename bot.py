@@ -11,17 +11,16 @@ with sync_playwright() as p:
         timeout=120000
     )
 
-    print("\nINPUTS\n")
-
     inputs = page.locator("input")
 
-    for i in range(inputs.count()):
-        inp = inputs.nth(i)
-        print(
-            i,
-            inp.get_attribute("placeholder"),
-            inp.get_attribute("aria-label"),
-            inp.get_attribute("type"),
-        )
+    # Origen
+    inputs.nth(0).fill("Barcelona Sants")
+
+    # Destino
+    inputs.nth(1).fill("Madrid")
+
+    page.wait_for_timeout(3000)
+
+    page.screenshot(path="ventas.png", full_page=True)
 
     browser.close()
