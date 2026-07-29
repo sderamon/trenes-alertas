@@ -1,19 +1,18 @@
-import os
-import requests
+from playwright.sync_api import sync_playwright
 
-TOKEN = os.environ["TELEGRAM_TOKEN"]
-CHAT_ID = os.environ["CHAT_ID"]
 
-mensaje = """🤖 El bot de GitHub funciona correctamente.
+def test_playwright():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
 
-A partir de ahora empezaremos a buscar billetes Barcelona → Madrid.
-"""
+        page = browser.new_page()
 
-url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        page.goto("https://www.ouigo.com/es")
 
-requests.post(url, data={
-    "chat_id": CHAT_ID,
-    "text": mensaje
-})
+        print(page.title())
 
-print("Mensaje enviado")
+        browser.close()
+
+
+if __name__ == "__main__":
+    test_playwright()
