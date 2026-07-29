@@ -3,36 +3,25 @@ from playwright.sync_api import sync_playwright
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
 
-    page = browser.new_page(
-        viewport={"width": 1440, "height": 1200}
-    )
+    page = browser.new_page(viewport={"width": 1440, "height": 1200})
 
     page.goto(
         "https://ventas.ouigo.com/es-ES",
-        wait_until="domcontentloaded",
+        wait_until="networkidle",
         timeout=120000
     )
 
-    page.wait_for_timeout(8000)
+    print("\nINPUTS\n")
 
-    page.screenshot(path="ventas.png", full_page=True)
+    inputs = page.locator("input")
 
-    print(page.title())
-    print(page.url)
-
-    print("\nTEXTBOXES\n")
-
-    for i, e in enumerate(page.get_by_role("textbox").all()):
-        print(i)
-
-    print("\nCOMBOBOX\n")
-
-    for i, e in enumerate(page.get_by_role("combobox").all()):
-        print(i)
-
-    print("\nBOTONES\n")
-
-    for t in page.locator("button").all_inner_texts():
-        print("-", t)
+    for i in range(inputs.count()):
+        inp = inputs.nth(i)
+        print(
+            i,
+            inp.get_attribute("placeholder"),
+            inp.get_attribute("aria-label"),
+            inp.get_attribute("type"),
+        )
 
     browser.close()
