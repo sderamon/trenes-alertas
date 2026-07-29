@@ -25,22 +25,14 @@ with sync_playwright() as p:
 
     # Abrir calendario de ida
     inputs.nth(2).click()
-    dias = page.locator("button")
-
-    print("\nCALENDARIO\n")
-
-    for i in range(dias.count()):
-        texto = dias.nth(i).inner_text().strip()
-        if texto:
-            print(i, texto)
-
     page.wait_for_timeout(2000)
 
-    print("\nBOTONES DEL CALENDARIO\n")
+    print("\nPRECIOS ENCONTRADOS\n")
 
-    for b in page.locator("button").all_inner_texts():
-        if b.strip():
-            print("-", b)
+    for b in page.locator("button").all():
+        txt = b.inner_text().strip()
+        if "€" in txt:
+            print(txt)
 
     page.screenshot(path="ventas.png", full_page=True)
 
