@@ -1,8 +1,12 @@
-ORIGIN = "Barcelona Sants"
-DESTINATION = "Madrid Puerta de Atocha"
+# Configuración del bot
 
-MAX_PRICE_PER_TRIP = 15
+ORIGEN = "Barcelona"
+DESTINO = "Madrid"
 
-STAY_NIGHTS = 2
+PRECIO_MAX_IDA = 15
+PRECIO_MAX_VUELTA = 15
 
-SEARCH_DAYS = 180
+ESTANCIA_MINIMA = 1
+ESTANCIA_MAXIMA = 2
+
+DIAS_A_BUSCAR = 180
