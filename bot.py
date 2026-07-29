@@ -1,31 +1,38 @@
-from dates import generate_trip_dates
-from search import buscar_ofertas
-from telegram_bot import send_message
+from playwright.sync_api import sync_playwright
 
+with sync_playwright() as p:
+    browser = p.chromium.launch(headless=True)
 
-def main():
+    page = browser.new_page(
+        viewport={"width": 1440, "height": 1200}
+    )
 
-    viajes = generate_trip_dates()
+    page.goto(
+        "https://ventas.ouigo.com/es-ES",
+        wait_until="domcontentloaded",
+        timeout=120000
+    )
 
-    ofertas = buscar_ofertas(viajes)
+    page.wait_for_timeout(8000)
 
-    if not ofertas:
-        print("No hay ofertas")
-        return
+    page.screenshot(path="ventas.png", full_page=True)
 
-    mensaje = "🚄 OFERTAS ENCONTRADAS\n\n"
+    print(page.title())
+    print(page.url)
 
-    for oferta in ofertas:
+    print("\nTEXTBOXES\n")
 
-        mensaje += (
-            f"📅 {oferta['ida']} → {oferta['vuelta']}\n"
-            f"💶 {oferta['precio_ida']} € + {oferta['precio_vuelta']} €"
-            f" = {oferta['total']} €\n"
-            f"🚅 {oferta['operador']}\n\n"
-        )
+    for i, e in enumerate(page.get_by_role("textbox").all()):
+        print(i)
 
-    send_message(mensaje)
+    print("\nCOMBOBOX\n")
 
+    for i, e in enumerate(page.get_by_role("combobox").all()):
+        print(i)
 
-if __name__ == "__main__":
-    main()
+    print("\nBOTONES\n")
+
+    for t in page.locator("button").all_inner_texts():
+        print("-", t)
+
+    browser.close()
