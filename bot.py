@@ -9,10 +9,14 @@ def main():
             viewport={"width": 1440, "height": 1200}
         )
 
-        page.goto("https://www.ouigo.com/es", wait_until="networkidle")
+        page.goto(
+            "https://www.ouigo.com/es",
+            wait_until="domcontentloaded",
+            timeout=120000
+        )
 
         # Espera unos segundos por si aparece un banner de cookies
-        page.wait_for_timeout(5000)
+        page.wait_for_timeout(10000)
 
         page.screenshot(path="ouigo.png", full_page=True)
 
