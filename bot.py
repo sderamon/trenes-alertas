@@ -11,19 +11,23 @@ with sync_playwright() as p:
         timeout=120000
     )
 
-    origen = page.locator("input").nth(0)
-    origen.fill("Barcelona")
+    inputs = page.locator("input")
 
-    page.wait_for_timeout(1500)
-
-    # Seleccionar Barcelona - Sants
+    # ORIGEN
+    inputs.nth(0).fill("Barcelona")
+    page.wait_for_timeout(1000)
     page.get_by_role("option").first.click()
 
+    # DESTINO
+    inputs.nth(1).fill("Madrid")
     page.wait_for_timeout(1000)
 
-    destino = page.locator("input").nth(1)
+    opciones = page.get_by_role("option")
 
-    print("Destino deshabilitado:", destino.is_disabled())
+    print("Opciones destino:", opciones.count())
+
+    for i in range(opciones.count()):
+        print(i, opciones.nth(i).inner_text())
 
     page.screenshot(path="ventas.png", full_page=True)
 
