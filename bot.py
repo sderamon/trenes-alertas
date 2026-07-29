@@ -1,6 +1,5 @@
 from playwright.sync_api import sync_playwright
 
-
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
 
@@ -12,17 +11,24 @@ with sync_playwright() as p:
         timeout=120000
     )
 
-    page.wait_for_timeout(10000)
+    page.wait_for_timeout(5000)
 
     print(page.title())
     print(page.url)
 
-   
+    print("\nINPUTS ENCONTRADOS:\n")
 
-    botones = page.locator("button").all_inner_texts()
+    for i, locator in enumerate(page.locator("input").all()):
+        print(i, locator.get_attribute("type"), locator.get_attribute("placeholder"))
 
-    print("BOTONES:")
-    for b in botones:
-        print("-", b)
+    print("\nTEXTBOX:\n")
+
+    for i, locator in enumerate(page.get_by_role("textbox").all()):
+        print(i)
+
+    print("\nCOMBOBOX:\n")
+
+    for i, locator in enumerate(page.get_by_role("combobox").all()):
+        print(i)
 
     browser.close()
