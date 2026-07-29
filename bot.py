@@ -27,12 +27,18 @@ with sync_playwright() as p:
     inputs.nth(2).click()
     page.wait_for_timeout(2000)
 
-    print("\nPRECIOS ENCONTRADOS\n")
-
-    for b in page.locator("button").all():
-        txt = b.inner_text().strip()
-        if "€" in txt:
-            print(txt)
+    print("\nELEMENTOS CON EURO\n")
+    
+    for e in page.locator("*").all():
+        try:
+            txt = e.inner_text().strip()
+            if "€" in txt:
+                print("-----")
+                print(txt)
+            if len(txt) > 500:
+                continue
+        except:
+            pass
 
     page.screenshot(path="ventas.png", full_page=True)
 
